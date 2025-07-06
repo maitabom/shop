@@ -20,6 +20,11 @@ class MyApp extends StatelessWidget {
           primary: Colors.purple,
           secondary: Colors.deepOrange,
         ),
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Colors.purple,
+          foregroundColor: Colors.white,
+          elevation: 4,
+        ),
       ),
       home: ProductsOverviewPage(),
       debugShowCheckedModeBanner: false,
