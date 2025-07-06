@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shop/components/product_item.dart';
 import 'package:shop/data/dummy_data.dart';
 import 'package:shop/models/product.dart';
 
@@ -15,7 +16,7 @@ class ProductsOverviewPage extends StatelessWidget {
         itemCount: listProducts.length,
         padding: EdgeInsets.all(10),
         itemBuilder: (context, index) {
-          return Text(listProducts[index].title);
+          return ProductItem(product: listProducts[index]);
         },
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
