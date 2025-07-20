@@ -41,7 +41,9 @@ class _ProductsOverviewPageState extends State<ProductsOverviewPage> {
             builder: (context, cart, child) => AppBadge(
               value: cart.itemsCount.toString(),
               child: IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context).pushNamed('/cart');
+                },
                 icon: Icon(Icons.shopping_cart),
               ),
             ),
