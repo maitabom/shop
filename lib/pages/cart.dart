@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:shop/components/cart_item.dart';
 import 'package:shop/provider/cart.dart';
+import 'package:shop/provider/order_list.dart';
 
 class CartPage extends StatelessWidget {
   const CartPage({super.key});
@@ -39,7 +40,14 @@ class CartPage extends StatelessWidget {
                 ),
                 Spacer(),
                 TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Provider.of<OrderList>(
+                      context,
+                      listen: false,
+                    ).addOrder(cart);
+
+                    cart.clear();
+                  },
                   style: TextButton.styleFrom(
                     textStyle: TextStyle(color: Theme.of(context).primaryColor),
                   ),
