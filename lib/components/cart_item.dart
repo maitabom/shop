@@ -26,6 +26,31 @@ class CartItemComponent extends StatelessWidget {
           listen: false,
         ).removeItem(cartItem.productID);
       },
+      confirmDismiss: (_) {
+        return Future.value(
+          showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: Text('Confirma exclusão?'),
+              content: Text('A exclusão deste item é irreversível.'),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop(false);
+                  },
+                  child: Text('Não'),
+                ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop(true);
+                  },
+                  child: Text('Sim'),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
       child: Card(
         margin: EdgeInsets.symmetric(horizontal: 15, vertical: 4),
         child: ListTile(
