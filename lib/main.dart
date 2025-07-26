@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop/pages/cart.dart';
 import 'package:shop/pages/orders.dart';
+import 'package:shop/pages/product_form.dart';
 import 'package:shop/pages/products_page.dart';
 import 'package:shop/provider/cart.dart';
 import 'package:shop/pages/product_detail.dart';
@@ -47,6 +48,7 @@ class MyApp extends StatelessWidget {
           '/cart': (context) => CartPage(),
           '/orders': (context) => OrdersPage(),
           '/products': (context) => ProductsPage(),
+          '/product_form': (context) => ProductFormPage(),
         },
       ),
     );
