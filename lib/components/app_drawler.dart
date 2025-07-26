@@ -25,6 +25,14 @@ class AppDrawler extends StatelessWidget {
               Navigator.of(context).pushReplacementNamed('/orders');
             },
           ),
+          Divider(),
+          ListTile(
+            leading: Icon(Icons.edit_calendar_rounded),
+            title: Text('Gerenciar Produtos'),
+            onTap: () {
+              Navigator.of(context).pushReplacementNamed('/products');
+            },
+          ),
         ],
       ),
     );
