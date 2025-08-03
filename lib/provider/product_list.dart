@@ -17,7 +17,7 @@ class ProductList with ChangeNotifier {
   int get itemsCount => _items.length;
 
   void add(Product product) {
-    http.post(
+    final future = http.post(
       Uri.parse('$_baseUrl/products.json'),
       body: jsonEncode({
         'name': product.name,
@@ -27,8 +27,22 @@ class ProductList with ChangeNotifier {
         'favorite': product.favorite,
       }),
     );
-    _items.add(product);
-    notifyListeners();
+
+    future.then((response) {
+      final id = jsonDecode(response.body)['name'];
+
+      _items.add(
+        Product(
+          id: id,
+          name: product.name,
+          description: product.description,
+          price: product.price,
+          imageUrl: product.imageUrl,
+          favorite: product.favorite,
+        ),
+      );
+      notifyListeners();
+    });
   }
 
   void update(Product product) {
