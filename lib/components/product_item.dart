@@ -16,7 +16,11 @@ class ProductItem extends StatelessWidget {
         child: Row(
           children: [
             IconButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(
+                  context,
+                ).pushNamed('/product_form', arguments: product);
+              },
               icon: Icon(Icons.edit),
               color: Theme.of(context).primaryColor,
             ),
