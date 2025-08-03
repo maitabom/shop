@@ -27,6 +27,15 @@ class ProductList with ChangeNotifier {
     }
   }
 
+  void delete(Product product) {
+    var index = _items.indexWhere((p) => p.id == product.id);
+
+    if (index >= 0) {
+      _items.removeWhere((p) => p.id == product.id);
+      notifyListeners();
+    }
+  }
+
   void save(Map<String, Object> data) {
     bool hasId = data['id'] != null;
 
