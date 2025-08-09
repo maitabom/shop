@@ -16,7 +16,7 @@ class ProductList with ChangeNotifier {
 
   int get itemsCount => _items.length;
 
-  void add(Product product) {
+  Future<void> add(Product product) {
     final future = http.post(
       Uri.parse('$_baseUrl/products.json'),
       body: jsonEncode({
@@ -28,7 +28,7 @@ class ProductList with ChangeNotifier {
       }),
     );
 
-    future.then((response) {
+    return future.then<void>((response) {
       final id = jsonDecode(response.body)['name'];
 
       _items.add(
@@ -42,16 +42,20 @@ class ProductList with ChangeNotifier {
         ),
       );
       notifyListeners();
+
+      return Future.value();
     });
   }
 
-  void update(Product product) {
+  Future<void> update(Product product) {
     var index = _items.indexWhere((p) => p.id == product.id);
 
     if (index >= 0) {
       _items[index] = product;
       notifyListeners();
     }
+
+    return Future.value();
   }
 
   void delete(Product product) {
@@ -63,7 +67,7 @@ class ProductList with ChangeNotifier {
     }
   }
 
-  void save(Map<String, Object> data) {
+  Future<void> save(Map<String, Object> data) {
     bool hasId = data['id'] != null;
 
     final product = Product(
@@ -75,9 +79,9 @@ class ProductList with ChangeNotifier {
     );
 
     if (hasId) {
-      update(product);
+      return update(product);
     } else {
-      add(product);
+      return add(product);
     }
   }
 }
