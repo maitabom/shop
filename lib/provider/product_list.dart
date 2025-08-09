@@ -75,8 +75,22 @@ class ProductList with ChangeNotifier {
     var index = _items.indexWhere((p) => p.id == product.id);
 
     if (index >= 0) {
-      _items[index] = product;
-      notifyListeners();
+      final future = http.patch(
+        Uri.parse('$_baseUrl/products/${product.id}.json'),
+        body: jsonEncode({
+          'name': product.name,
+          'description': product.description,
+          'price': product.price,
+          'imageUrl': product.imageUrl,
+        }),
+      );
+
+      return future.then<void>((response) {
+        _items[index] = product;
+        notifyListeners();
+
+        return Future.value();
+      });
     }
 
     return Future.value();
