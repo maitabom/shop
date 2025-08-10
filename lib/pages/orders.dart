@@ -4,48 +4,37 @@ import 'package:shop/components/app_drawler.dart';
 import 'package:shop/components/order.dart';
 import 'package:shop/provider/order_list.dart';
 
-class OrdersPage extends StatefulWidget {
+class OrdersPage extends StatelessWidget {
   const OrdersPage({super.key});
 
-  @override
-  State<OrdersPage> createState() => _OrdersPageState();
-}
-
-class _OrdersPageState extends State<OrdersPage> {
-  bool _isLoading = true;
-
-  Future<void> _refreshOrders(BuildContext context) {
+  Future<void> _loadOrders(BuildContext context) {
     return Provider.of<OrderList>(context, listen: false).loadOrders();
   }
 
   @override
-  void initState() {
-    super.initState();
-
-    Provider.of<OrderList>(context, listen: false).loadOrders().then((_) {
-      setState(() {
-        _isLoading = false;
-      });
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
-    final OrderList orders = Provider.of<OrderList>(context);
-
     return Scaffold(
       appBar: AppBar(title: Text('Meus Pedidos')),
       drawer: AppDrawler(),
-      body: _isLoading
-          ? Center(child: CircularProgressIndicator())
-          : RefreshIndicator(
-              onRefresh: () => _refreshOrders(context),
-              child: ListView.builder(
-                itemCount: orders.itemsCount,
-                itemBuilder: (context, index) =>
-                    OrderWidget(order: orders.items[index]),
+      body: FutureBuilder(
+        future: _loadOrders(context),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          } else {
+            return RefreshIndicator(
+              onRefresh: () => _loadOrders(context),
+              child: Consumer<OrderList>(
+                builder: (context, orders, child) => ListView.builder(
+                  itemCount: orders.itemsCount,
+                  itemBuilder: (context, index) =>
+                      OrderWidget(order: orders.items[index]),
+                ),
               ),
-            ),
+            );
+          }
+        },
+      ),
     );
   }
 }
