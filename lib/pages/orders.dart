@@ -14,6 +14,10 @@ class OrdersPage extends StatefulWidget {
 class _OrdersPageState extends State<OrdersPage> {
   bool _isLoading = true;
 
+  Future<void> _refreshOrders(BuildContext context) {
+    return Provider.of<OrderList>(context, listen: false).loadOrders();
+  }
+
   @override
   void initState() {
     super.initState();
@@ -34,10 +38,13 @@ class _OrdersPageState extends State<OrdersPage> {
       drawer: AppDrawler(),
       body: _isLoading
           ? Center(child: CircularProgressIndicator())
-          : ListView.builder(
-              itemCount: orders.itemsCount,
-              itemBuilder: (context, index) =>
-                  OrderWidget(order: orders.items[index]),
+          : RefreshIndicator(
+              onRefresh: () => _refreshOrders(context),
+              child: ListView.builder(
+                itemCount: orders.itemsCount,
+                itemBuilder: (context, index) =>
+                    OrderWidget(order: orders.items[index]),
+              ),
             ),
     );
   }
