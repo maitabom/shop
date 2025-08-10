@@ -96,13 +96,23 @@ class ProductList with ChangeNotifier {
     return Future.value();
   }
 
-  void delete(Product product) {
+  Future<void> delete(Product product) {
     var index = _items.indexWhere((p) => p.id == product.id);
 
     if (index >= 0) {
-      _items.removeWhere((p) => p.id == product.id);
-      notifyListeners();
+      final future = http.delete(
+        Uri.parse('$_baseUrl/products/${product.id}.json'),
+      );
+
+      return future.then<void>((response) {
+        _items.removeWhere((p) => p.id == product.id);
+        notifyListeners();
+
+        return Future.value();
+      });
     }
+
+    return Future.value();
   }
 
   Future<void> save(Map<String, Object> data) {
