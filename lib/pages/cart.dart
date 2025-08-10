@@ -40,14 +40,16 @@ class CartPage extends StatelessWidget {
                 ),
                 Spacer(),
                 TextButton(
-                  onPressed: () {
-                    Provider.of<OrderList>(
-                      context,
-                      listen: false,
-                    ).addOrder(cart);
+                  onPressed: cart.itemsCount == 0
+                      ? null
+                      : () {
+                          Provider.of<OrderList>(
+                            context,
+                            listen: false,
+                          ).addOrder(cart);
 
-                    cart.clear();
-                  },
+                          cart.clear();
+                        },
                   style: TextButton.styleFrom(
                     textStyle: TextStyle(color: Theme.of(context).primaryColor),
                   ),
