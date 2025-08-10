@@ -10,6 +10,8 @@ class ProductItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final snackMessage = ScaffoldMessenger.of(context);
+
     return ListTile(
       leading: CircleAvatar(backgroundImage: NetworkImage(product.imageUrl)),
       title: Text(product.name),
@@ -50,7 +52,18 @@ class ProductItem extends StatelessWidget {
                     ],
                   ),
                 ).then(
-                  (value) => {if (value ?? false) provider.delete(product)},
+                  (value) => {
+                    if (value ?? false)
+                      provider.delete(product).catchError((error) {
+                        snackMessage.showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              'Não foi possível excluir este produto.',
+                            ),
+                          ),
+                        );
+                      }),
+                  },
                 );
               },
               icon: Icon(Icons.delete),
