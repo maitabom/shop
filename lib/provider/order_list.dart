@@ -18,7 +18,7 @@ class OrderList with ChangeNotifier {
     return _items.length;
   }
 
-  Future<void> addOrder(Cart cart) async {
+  Future<void> add(Cart cart) async {
     final currentDate = DateTime.now();
 
     final future = http.post(

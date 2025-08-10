@@ -46,7 +46,7 @@ class CartPage extends StatelessWidget {
                           Provider.of<OrderList>(
                             context,
                             listen: false,
-                          ).addOrder(cart);
+                          ).add(cart);
 
                           cart.clear();
                         },
