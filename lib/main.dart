@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shop/pages/authentication.dart';
 import 'package:shop/pages/cart.dart';
 import 'package:shop/pages/orders.dart';
 import 'package:shop/pages/product_form.dart';
@@ -43,7 +44,8 @@ class MyApp extends StatelessWidget {
         ),
         debugShowCheckedModeBanner: false,
         routes: {
-          '/': (context) => ProductsOverviewPage(),
+          '/': (context) => AuthenticationPage(),
+          '/home': (context) => ProductsOverviewPage(),
           '/product-detail': (context) => ProductDetailPage(),
           '/cart': (context) => CartPage(),
           '/orders': (context) => OrdersPage(),
