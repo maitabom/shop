@@ -31,6 +31,7 @@ class AuthenticationPage extends StatelessWidget {
               children: [
                 Container(
                   padding: EdgeInsets.symmetric(vertical: 10, horizontal: 70),
+                  margin: EdgeInsets.only(bottom: 20),
                   transform: Matrix4.rotationZ(-8 * pi / 180)..translate(-10.0),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
