@@ -1,3 +1,4 @@
 class Constants {
-  static const baseUrl = 'https://shop-valentim-default-rtdb.firebaseio.com/';
+  static const baseDatabaseUrl =
+      'https://shop-valentim-default-rtdb.firebaseio.com/';
 }
