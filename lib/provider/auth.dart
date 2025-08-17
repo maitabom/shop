@@ -28,6 +28,10 @@ class Auth with ChangeNotifier {
     return isAuth ? _email : null;
   }
 
+  String? get uid {
+    return isAuth ? _uid : null;
+  }
+
   Future<void> signUp(String email, String password) async {
     final String fragment = 'signUp';
 
