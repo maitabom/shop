@@ -1,17 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
 import 'package:shop/pages/authentication.dart';
 import 'package:shop/pages/cart.dart';
 import 'package:shop/pages/orders.dart';
 import 'package:shop/pages/product_form.dart';
 import 'package:shop/pages/products_page.dart';
+import 'package:shop/provider/auth.dart';
 import 'package:shop/provider/cart.dart';
 import 'package:shop/pages/product_detail.dart';
 import 'package:shop/pages/products_overview.dart';
 import 'package:shop/provider/order_list.dart';
 import 'package:shop/provider/product_list.dart';
 
-void main() {
+Future<void> main() async {
+  await dotenv.load(fileName: '.env');
+
   runApp(const MyApp());
 }
 
@@ -26,6 +30,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => ProductList()),
         ChangeNotifierProvider(create: (_) => Cart()),
         ChangeNotifierProvider(create: (_) => OrderList()),
+        ChangeNotifierProvider(create: (_) => Auth()),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
