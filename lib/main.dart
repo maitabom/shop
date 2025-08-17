@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
+import 'package:shop/pages/auth_or_home.dart';
 import 'package:shop/pages/authentication.dart';
 import 'package:shop/pages/cart.dart';
 import 'package:shop/pages/orders.dart';
@@ -49,7 +50,8 @@ class MyApp extends StatelessWidget {
         ),
         debugShowCheckedModeBanner: false,
         routes: {
-          '/': (context) => AuthenticationPage(),
+          '/': (context) => AuthOrHomePage(),
+          '/login': (context) => AuthenticationPage(),
           '/home': (context) => ProductsOverviewPage(),
           '/product-detail': (context) => ProductDetailPage(),
           '/cart': (context) => CartPage(),
