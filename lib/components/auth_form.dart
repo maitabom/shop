@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shop/provider/auth.dart';
 
 class AuthForm extends StatefulWidget {
   const AuthForm({super.key});
@@ -10,10 +12,10 @@ class AuthForm extends StatefulWidget {
 class _AuthFormState extends State<AuthForm> {
   final _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  final Map<String, String> _formData = {'email': '', 'password': ''};
 
   bool _isLoading = false;
   AuthMode _authMode = AuthMode.login;
-  final Map<String, String> _formData = {'email': '', 'password': ''};
 
   bool _isLogin() => _authMode == AuthMode.login;
   bool _isSignUp() => _authMode == AuthMode.signUp;
@@ -28,7 +30,7 @@ class _AuthFormState extends State<AuthForm> {
     });
   }
 
-  void _submit() {
+  Future<void> _submit() async {
     final isValid = _formKey.currentState?.validate() ?? false;
 
     if (!isValid) return;
@@ -37,10 +39,17 @@ class _AuthFormState extends State<AuthForm> {
       _isLoading = true;
     });
 
+    final auth = Provider.of<Auth>(context, listen: false);
+
     _formKey.currentState?.save();
 
     if (_isLogin()) {
-    } else {}
+    } else {
+      await auth.signUp(
+        _formData['email'] as String,
+        _formData['password'] as String,
+      );
+    }
 
     setState(() {
       _isLoading = false;
