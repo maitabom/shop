@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shop/errors/auth_exception.dart';
 import 'package:shop/provider/auth.dart';
 
 class AuthForm extends StatefulWidget {
@@ -30,6 +31,22 @@ class _AuthFormState extends State<AuthForm> {
     });
   }
 
+  void _showErrorDialog(String message) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('Ocorreu um erro'),
+        content: Text(message),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: Text('OK'),
+          ),
+        ],
+      ),
+    );
+  }
+
   Future<void> _submit() async {
     final isValid = _formKey.currentState?.validate() ?? false;
 
@@ -43,12 +60,22 @@ class _AuthFormState extends State<AuthForm> {
 
     _formKey.currentState?.save();
 
-    if (_isLogin()) {
-    } else {
-      await auth.signUp(
-        _formData['email'] as String,
-        _formData['password'] as String,
-      );
+    try {
+      if (_isLogin()) {
+        await auth.login(
+          _formData['email'] as String,
+          _formData['password'] as String,
+        );
+      } else {
+        await auth.signUp(
+          _formData['email'] as String,
+          _formData['password'] as String,
+        );
+      }
+    } on AuthException catch (error) {
+      _showErrorDialog(error.toString());
+    } catch (error) {
+      _showErrorDialog('Ocorreu um erro inesperado.');
     }
 
     setState(() {
