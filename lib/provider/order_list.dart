@@ -9,7 +9,7 @@ import 'package:http/http.dart' as http;
 
 class OrderList with ChangeNotifier {
   final List<Order> _items = [];
-  final _baseUrl = Constants.baseUrl;
+  final _baseUrl = Constants.baseDatabaseUrl;
 
   List<Order> get items {
     return [..._items];

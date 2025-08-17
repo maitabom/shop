@@ -8,7 +8,7 @@ import 'package:shop/models/product.dart';
 
 class ProductList with ChangeNotifier {
   final List<Product> _items = [];
-  final _baseUrl = Constants.baseUrl;
+  final _baseUrl = Constants.baseDatabaseUrl;
 
   List<Product> get items => [..._items];
   List<Product> get favoriteItems =>
