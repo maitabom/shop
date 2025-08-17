@@ -7,8 +7,11 @@ import 'package:shop/config/constants.dart';
 import 'package:shop/models/product.dart';
 
 class ProductList with ChangeNotifier {
-  final List<Product> _items = [];
+  final String _token;
+  final List<Product> _items;
   final _baseUrl = Constants.baseDatabaseUrl;
+
+  ProductList(this._token, this._items);
 
   List<Product> get items => [..._items];
   List<Product> get favoriteItems =>
@@ -19,7 +22,9 @@ class ProductList with ChangeNotifier {
   Future<void> loadProducts() async {
     _items.clear();
 
-    final response = await http.get(Uri.parse('$_baseUrl/products.json'));
+    final response = await http.get(
+      Uri.parse('$_baseUrl/products.json?auth=$_token'),
+    );
 
     if (response.body == 'null') return;
 
@@ -43,7 +48,7 @@ class ProductList with ChangeNotifier {
 
   Future<void> add(Product product) {
     final future = http.post(
-      Uri.parse('$_baseUrl/products.json'),
+      Uri.parse('$_baseUrl/products.json?auth=$_token'),
       body: jsonEncode({
         'name': product.name,
         'description': product.description,
@@ -77,7 +82,7 @@ class ProductList with ChangeNotifier {
 
     if (index >= 0) {
       final future = http.patch(
-        Uri.parse('$_baseUrl/products/${product.id}.json'),
+        Uri.parse('$_baseUrl/products/${product.id}.json?auth=$_token'),
         body: jsonEncode({
           'name': product.name,
           'description': product.description,
@@ -102,7 +107,7 @@ class ProductList with ChangeNotifier {
 
     if (index >= 0) {
       final future = http.delete(
-        Uri.parse('$_baseUrl/products/${product.id}.json'),
+        Uri.parse('$_baseUrl/products/${product.id}.json?auth=$_token'),
       );
 
       return future.then<void>((response) {
