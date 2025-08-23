@@ -21,20 +21,33 @@ class Product with ChangeNotifier {
     this.favorite = false,
   });
 
-  Future<void> toggleFavorite(String token, String userId) {
-    String url =
+  Future<void> toggleFavorite(String token, String userId) async {
+    final url =
         '${Constants.baseDatabaseUrl}/user_favorite/$userId/$id.json?auth=$token';
 
-    final future = http.put(
-      Uri.parse(url),
-      body: jsonEncode({'favorite': favorite}),
-    );
+    final newStatus = !favorite;
 
-    return future.then((response) {
-      favorite = !favorite;
+    // Atualiza otimisticamente na UI
+    favorite = newStatus;
+    notifyListeners();
+
+    try {
+      final response = await http.put(
+        Uri.parse(url),
+        body: jsonEncode(newStatus),
+      );
+
+      if (response.statusCode >= 400) {
+        // rollback em caso de erro no servidor
+        favorite = !newStatus;
+        notifyListeners();
+        throw Exception('Falha ao atualizar favorito no servidor.');
+      }
+    } catch (error) {
+      // rollback em caso de erro de rede/exceção
+      favorite = !newStatus;
       notifyListeners();
-
-      return Future.value();
-    });
+      rethrow;
+    }
   }
 }
