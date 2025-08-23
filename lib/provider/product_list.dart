@@ -38,7 +38,6 @@ class ProductList with ChangeNotifier {
           description: item['description'],
           price: item['price'],
           imageUrl: item['imageUrl'],
-          favorite: item['favorite'],
         ),
       );
     });
