@@ -28,7 +28,7 @@ class Auth with ChangeNotifier {
     return isAuth ? _email : null;
   }
 
-  String? get uid {
+  String? get userId {
     return isAuth ? _uid : null;
   }
 

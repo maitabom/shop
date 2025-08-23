@@ -21,8 +21,8 @@ class Product with ChangeNotifier {
     this.favorite = false,
   });
 
-  Future<void> toggleFavorite() {
-    String url = '${Constants.baseDatabaseUrl}/products/$id.json';
+  Future<void> toggleFavorite(String token) {
+    String url = '${Constants.baseDatabaseUrl}/products/$id.json?auth=$token';
     final future = http.patch(
       Uri.parse(url),
       body: jsonEncode({'favorite': favorite}),
