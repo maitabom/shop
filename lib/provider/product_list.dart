@@ -8,10 +8,11 @@ import 'package:shop/models/product.dart';
 
 class ProductList with ChangeNotifier {
   final String _token;
+  final String _userId;
   final List<Product> _items;
   final _baseUrl = Constants.baseDatabaseUrl;
 
-  ProductList(this._token, this._items);
+  ProductList([this._token = '', this._userId = '', this._items = const []]);
 
   List<Product> get items => [..._items];
   List<Product> get favoriteItems =>
@@ -22,15 +23,25 @@ class ProductList with ChangeNotifier {
   Future<void> loadProducts() async {
     _items.clear();
 
-    final response = await http.get(
+    final productResponse = await http.get(
       Uri.parse('$_baseUrl/products.json?auth=$_token'),
     );
 
-    if (response.body == 'null') return;
+    if (productResponse.body == 'null') return;
 
-    Map<String, dynamic> data = jsonDecode(response.body);
+    final favoriteResponse = await http.get(
+      Uri.parse('$_baseUrl/user_favorite/$_userId.json?auth=$_token'),
+    );
+
+    Map<String, dynamic> favoriteData = favoriteResponse.body == 'null'
+        ? {}
+        : jsonDecode(favoriteResponse.body);
+
+    Map<String, dynamic> data = jsonDecode(productResponse.body);
 
     data.forEach((key, item) {
+      final isFavorite = favoriteData[key] ?? false;
+
       _items.add(
         Product(
           id: key,
@@ -38,6 +49,7 @@ class ProductList with ChangeNotifier {
           description: item['description'],
           price: item['price'],
           imageUrl: item['imageUrl'],
+          favorite: isFavorite,
         ),
       );
     });
