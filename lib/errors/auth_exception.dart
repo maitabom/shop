@@ -7,6 +7,7 @@ class AuthException implements Exception {
     'TOO_MANY_ATTEMPTS_TRY_LATER':
         'Acesso bloqueado temporariamente. Tente mais tarde',
     'EMAIL_NOT_FOUND': 'E-mail não encontrado.',
+    'INVALID_LOGIN_CREDENTIALS': 'Os dados informados são inválidos',
     'INVALID_PASSWORD': 'A senha informada está incorreta.',
     'USER_DISABLED': 'O usuário encontra-se desabilitado no sistema.',
   };
