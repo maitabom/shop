@@ -44,6 +44,15 @@ class Auth with ChangeNotifier {
     return _authenticate(email, password, fragment);
   }
 
+  void logout() {
+    _token = null;
+    _email = null;
+    _uid = null;
+    _expireDate = null;
+
+    notifyListeners();
+  }
+
   Future<void> _authenticate(
     String email,
     String password,
