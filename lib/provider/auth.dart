@@ -55,7 +55,7 @@ class Auth with ChangeNotifier {
 
     _clearAutoLogoutTimer();
 
-    notifyListeners();
+    Store.remove('userData').then((_) => notifyListeners());
   }
 
   Future<void> autologin() async {
