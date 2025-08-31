@@ -11,38 +11,43 @@ class ProductDetailPage extends StatelessWidget {
         ModalRoute.of(context)!.settings.arguments as Product;
 
     return Scaffold(
-      appBar: AppBar(title: Text(product.name)),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            SizedBox(
-              height: 300,
-              width: double.infinity,
-              child: Hero(
+      body: CustomScrollView(
+        slivers: [
+          SliverAppBar(
+            expandedHeight: 300,
+            pinned: true,
+            flexibleSpace: FlexibleSpaceBar(
+              title: Text(product.name),
+              background: Hero(
                 tag: product.id,
                 child: Image.network(product.imageUrl, fit: BoxFit.cover),
               ),
             ),
-            SizedBox(height: 10),
-            Text(
-              NumberFormat.currency(
-                locale: 'pt_BR',
-                symbol: 'R\$',
-              ).format(product.price),
-              style: TextStyle(
-                color: Colors.grey,
-                fontSize: 22,
-                fontWeight: FontWeight.bold,
+          ),
+          SliverList(
+            delegate: SliverChildListDelegate([
+              SizedBox(height: 10),
+              Text(
+                NumberFormat.currency(
+                  locale: 'pt_BR',
+                  symbol: 'R\$',
+                ).format(product.price),
+                style: TextStyle(
+                  color: Colors.grey,
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                ),
+                textAlign: TextAlign.center,
               ),
-            ),
-            SizedBox(height: 10),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              width: double.infinity,
-              child: Text(product.description, textAlign: TextAlign.center),
-            ),
-          ],
-        ),
+              SizedBox(height: 10),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                width: double.infinity,
+                child: Text(product.description, textAlign: TextAlign.center),
+              ),
+            ]),
+          ),
+        ],
       ),
     );
   }
