@@ -18,12 +18,14 @@ class _AuthFormState extends State<AuthForm>
 
   AnimationController? _controller;
   Animation<Size>? _heightAnimation;
+  Animation<Offset>? _slideAnimation;
+  Animation<double>? _opacityAnimation;
 
   bool _isLoading = false;
   AuthMode _authMode = AuthMode.login;
 
   bool _isLogin() => _authMode == AuthMode.login;
-  bool _isSignUp() => _authMode == AuthMode.signUp;
+  //bool _isSignUp() => _authMode == AuthMode.signUp;
 
   @override
   void initState() {
@@ -37,6 +39,16 @@ class _AuthFormState extends State<AuthForm>
     _heightAnimation = Tween(
       begin: Size(double.infinity, 320),
       end: Size(double.infinity, 400),
+    ).animate(CurvedAnimation(parent: _controller!, curve: Curves.linear));
+
+    _opacityAnimation = Tween(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(CurvedAnimation(parent: _controller!, curve: Curves.linear));
+
+    _slideAnimation = Tween(
+      begin: Offset(0, -1.5),
+      end: Offset(0, 0),
     ).animate(CurvedAnimation(parent: _controller!, curve: Curves.linear));
   }
 
@@ -159,23 +171,38 @@ class _AuthFormState extends State<AuthForm>
                   return null;
                 },
               ),
-              if (_isSignUp())
-                TextFormField(
-                  decoration: InputDecoration(labelText: 'Confirme a senha'),
-                  keyboardType: TextInputType.text,
-                  obscureText: true,
-                  validator: _isLogin()
-                      ? null
-                      : (password) {
-                          final pivot = password ?? '';
-
-                          if (pivot != _passwordController.text) {
-                            return 'Senhas informadas não conferem';
-                          }
-
-                          return null;
-                        },
+              AnimatedContainer(
+                duration: Duration(microseconds: 400),
+                curve: Curves.linear,
+                constraints: BoxConstraints(
+                  minHeight: _isLogin() ? 0 : 60,
+                  maxHeight: _isLogin() ? 0 : 120,
                 ),
+                child: FadeTransition(
+                  opacity: _opacityAnimation!,
+                  child: SlideTransition(
+                    position: _slideAnimation!,
+                    child: TextFormField(
+                      decoration: InputDecoration(
+                        labelText: 'Confirme a senha',
+                      ),
+                      keyboardType: TextInputType.text,
+                      obscureText: true,
+                      validator: _isLogin()
+                          ? null
+                          : (password) {
+                              final pivot = password ?? '';
+
+                              if (pivot != _passwordController.text) {
+                                return 'Senhas informadas não conferem';
+                              }
+
+                              return null;
+                            },
+                    ),
+                  ),
+                ),
+              ),
               SizedBox(height: 40),
               if (_isLoading)
                 CircularProgressIndicator()
